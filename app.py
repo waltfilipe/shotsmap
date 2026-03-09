@@ -39,7 +39,7 @@ shots_off_target = df_shots[df_shots["resultado"] == "Fora"]
 shots_blocked = df_shots[df_shots["resultado"] == "Bloqueado"]
 
 # ==========================
-# CAMPO
+# CRIAR CAMPO
 # ==========================
 
 pitch = VerticalPitch(
@@ -52,69 +52,73 @@ pitch = VerticalPitch(
 fig, ax = pitch.draw(figsize=(6,4))
 
 # ==========================
-# CHUTES
+# TAMANHO DOS CHUTES (REDUZIDO)
 # ==========================
 
 pitch.scatter(
-    shots_goal.x, shots_goal.y,
-    s=(shots_goal.xg * 2000) + 100,
+    shots_goal.x,
+    shots_goal.y,
+    s=(shots_goal.xg * 900) + 40,
     marker="*",
     c="#EF476F",
     edgecolors="#383838",
-    linewidth=1.5,
+    linewidth=1,
     ax=ax,
     label="Gol"
 )
 
 pitch.scatter(
-    shots_on_target.x, shots_on_target.y,
-    s=(shots_on_target.xg * 1800) + 100,
+    shots_on_target.x,
+    shots_on_target.y,
+    s=(shots_on_target.xg * 850) + 40,
     marker="h",
     c="#06D6A0",
     edgecolors="#383838",
-    linewidth=1.5,
+    linewidth=1,
     ax=ax,
     label="Chute no alvo"
 )
 
 pitch.scatter(
-    shots_off_target.x, shots_off_target.y,
-    s=(shots_off_target.xg * 1800) + 100,
+    shots_off_target.x,
+    shots_off_target.y,
+    s=(shots_off_target.xg * 850) + 40,
     marker="o",
     c="#FFD166",
     edgecolors="#383838",
-    linewidth=1.5,
+    linewidth=1,
     ax=ax,
     label="Chute para fora"
 )
 
 pitch.scatter(
-    shots_blocked.x, shots_blocked.y,
-    s=(shots_blocked.xg * 1800) + 100,
+    shots_blocked.x,
+    shots_blocked.y,
+    s=(shots_blocked.xg * 850) + 40,
     marker="s",
     c="#118AB2",
     edgecolors="#383838",
-    linewidth=1.5,
+    linewidth=1,
     ax=ax,
     label="Chute bloqueado"
 )
 
 # ==========================
-# LEGENDA
+# LEGENDA (AJUSTADA)
 # ==========================
 
 legend = ax.legend(
-    loc='lower right',
+    loc="lower right",
     frameon=True,
-    borderpad=1.2,
-    fontsize=13,
-    labelspacing=1,
-    handletextpad=1.2
+    borderpad=0.8,
+    fontsize=9,
+    labelspacing=0.6,
+    handletextpad=0.6
 )
 
 legend.get_frame().set_facecolor("#f5f5f5")
-legend.get_frame().set_edgecolor('black')
-legend.get_frame().set_linewidth(1.5)
+legend.get_frame().set_edgecolor("black")
+legend.get_frame().set_linewidth(1.2)
 
 # ==========================
 # CONVERTER FIGURA PARA IMAGEM
@@ -133,7 +137,7 @@ img = Image.open(buf)
 coords = streamlit_image_coordinates(img)
 
 # ==========================
-# DETECTAR CHUTE
+# DETECTAR CHUTE CLICADO
 # ==========================
 
 if coords:
@@ -153,6 +157,6 @@ if coords:
 
     shot_index = distances.idxmin()
 
-    st.subheader("Vídeo da Finalização")
+    st.subheader("Vídeo da finalização")
 
     st.video(df_shots.loc[shot_index, "video"])
