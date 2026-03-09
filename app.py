@@ -1,127 +1,146 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
-from streamlit_plotly_events import plotly_events
+import matplotlib.pyplot as plt
+from mplsoccer import VerticalPitch
+from streamlit_image_coordinates import streamlit_image_coordinates
+from io import BytesIO
+import numpy as np
 
 st.set_page_config(layout="wide")
 
-st.title("Shot Map Interativo com Vídeo")
+st.title("Shot Map com Vídeos")
 
-# ================================
+# ==========================
 # DADOS DOS CHUTES
-# ================================
+# ==========================
 
 data = {
-    "x": [105, 102, 98, 110, 95, 108],
-    "y": [40, 30, 50, 45, 35, 42],
-    "xg": [0.30, 0.12, 0.05, 0.45, 0.08, 0.20],
-    "resultado": ["Gol", "Fora", "Bloqueado", "Gol", "Fora", "No Alvo"],
+    "x": [105, 102, 98, 110, 95, 108, 100],
+    "y": [40, 30, 50, 45, 35, 42, 38],
+    "xg": [0.30, 0.12, 0.05, 0.45, 0.08, 0.20, 0.15],
+    "resultado": ["Gol", "Fora", "Bloqueado", "Gol", "Fora", "No Alvo", "Bloqueado"],
     "video": [
         "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/movie.mp4",
         "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/movie.mp4",
         "https://www.w3schools.com/html/mov_bbb.mp4",
-        "https://www.w3schools.com/html/movie.mp4"
+        "https://www.w3schools.com/html/movie.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4"
     ]
 }
 
-df = pd.DataFrame(data)
+df_shots = pd.DataFrame(data)
 
-# ================================
-# CRIAR CAMPO DE FUTEBOL
-# ================================
+shots_goal = df_shots[df_shots["resultado"] == "Gol"]
+shots_on_target = df_shots[df_shots["resultado"] == "No Alvo"]
+shots_off_target = df_shots[df_shots["resultado"] == "Fora"]
+shots_blocked = df_shots[df_shots["resultado"] == "Bloqueado"]
 
-fig = go.Figure()
+# ==========================
+# CAMPO
+# ==========================
 
-# Campo (retângulo)
-fig.add_shape(type="rect",
-              x0=80, y0=0, x1=120, y1=80,
-              line=dict(color="white"),
-              fillcolor="#1c1c1c")
-
-# Área
-fig.add_shape(type="rect",
-              x0=102, y0=18,
-              x1=120, y1=62,
-              line=dict(color="white"))
-
-# Pequena área
-fig.add_shape(type="rect",
-              x0=114, y0=30,
-              x1=120, y1=50,
-              line=dict(color="white"))
-
-# Gol
-fig.add_shape(type="rect",
-              x0=120, y0=36,
-              x1=122, y1=44,
-              line=dict(color="white"))
-
-# ================================
-# CORES POR RESULTADO
-# ================================
-
-color_map = {
-    "Gol": "#EF476F",
-    "No Alvo": "#06D6A0",
-    "Fora": "#FFD166",
-    "Bloqueado": "#118AB2"
-}
-
-# ================================
-# PLOTAR CHUTES
-# ================================
-
-for i, row in df.iterrows():
-    
-    fig.add_trace(go.Scatter(
-        x=[row["x"]],
-        y=[row["y"]],
-        mode="markers",
-        marker=dict(
-            size=row["xg"] * 60 + 10,
-            color=color_map[row["resultado"]],
-            line=dict(width=1,color="black")
-        ),
-        name=row["resultado"],
-        customdata=[row["video"]],
-        hovertemplate=f"xG: {row['xg']}"
-    ))
-
-# ================================
-# LAYOUT
-# ================================
-
-fig.update_layout(
-    xaxis=dict(range=[80,122],visible=False),
-    yaxis=dict(range=[0,80],visible=False),
-    plot_bgcolor="#1c1c1c",
-    paper_bgcolor="#1c1c1c",
-    height=600,
-    showlegend=False
+pitch = VerticalPitch(
+    half=True,
+    pitch_type="statsbomb",
+    pitch_color="#1c1c1c",
+    line_color="white"
 )
 
-# ================================
-# CAPTURAR CLIQUE
-# ================================
+fig, ax = pitch.draw(figsize=(10,7))
 
-selected_points = plotly_events(
-    fig,
-    click_event=True,
-    hover_event=False
+# ==========================
+# CHUTES (IGUAL AO SEU)
+# ==========================
+
+pitch.scatter(
+    shots_goal.x,
+    shots_goal.y,
+    s=(shots_goal.xg * 2000) + 100,
+    marker="*",
+    c="#EF476F",
+    edgecolors="#383838",
+    linewidth=1.5,
+    ax=ax,
+    label="Gol"
 )
 
-# ================================
-# MOSTRAR VIDEO
-# ================================
+pitch.scatter(
+    shots_on_target.x,
+    shots_on_target.y,
+    s=(shots_on_target.xg * 1800) + 100,
+    marker="h",
+    c="#06D6A0",
+    edgecolors="#383838",
+    linewidth=1.5,
+    ax=ax,
+    label="Chute no alvo"
+)
 
-if selected_points:
+pitch.scatter(
+    shots_off_target.x,
+    shots_off_target.y,
+    s=(shots_off_target.xg * 1800) + 100,
+    marker="o",
+    c="#FFD166",
+    edgecolors="#383838",
+    linewidth=1.5,
+    ax=ax,
+    label="Chute para fora"
+)
 
-    point_index = selected_points[0]["pointIndex"]
+pitch.scatter(
+    shots_blocked.x,
+    shots_blocked.y,
+    s=(shots_blocked.xg * 1800) + 100,
+    marker="s",
+    c="#118AB2",
+    edgecolors="#383838",
+    linewidth=1.5,
+    ax=ax,
+    label="Chute bloqueado"
+)
 
-    video_url = df.iloc[point_index]["video"]
+ax.legend()
 
-    st.subheader("Vídeo da Finalização")
+# ==========================
+# CONVERTER FIGURA EM IMAGEM
+# ==========================
 
-    st.video(video_url)
+buf = BytesIO()
+fig.savefig(buf, format="png", dpi=300, bbox_inches="tight")
+buf.seek(0)
+
+# ==========================
+# MOSTRAR IMAGEM CLICÁVEL
+# ==========================
+
+coords = streamlit_image_coordinates(buf)
+
+# ==========================
+# DETECTAR CHUTE CLICADO
+# ==========================
+
+if coords is not None:
+
+    click_x = coords["x"]
+    click_y = coords["y"]
+
+    # converter coordenada de pixel → campo
+    width = 1000
+    height = 700
+
+    pitch_x = 120 - (click_y / height * 60)
+    pitch_y = click_x / width * 80
+
+    distances = np.sqrt(
+        (df_shots["x"] - pitch_x)**2 +
+        (df_shots["y"] - pitch_y)**2
+    )
+
+    shot_index = distances.idxmin()
+
+    st.subheader("Vídeo da finalização")
+
+    st.video(df_shots.loc[shot_index, "video"])
