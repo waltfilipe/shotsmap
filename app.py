@@ -62,7 +62,8 @@ pitch.scatter(
     c="#EF476F",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax
+    ax=ax,
+    label="Gol"
 )
 
 pitch.scatter(
@@ -72,7 +73,8 @@ pitch.scatter(
     c="#06D6A0",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax
+    ax=ax,
+    label="Chute no alvo"
 )
 
 pitch.scatter(
@@ -82,7 +84,8 @@ pitch.scatter(
     c="#FFD166",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax
+    ax=ax,
+    label="Chute para fora"
 )
 
 pitch.scatter(
@@ -92,7 +95,8 @@ pitch.scatter(
     c="#118AB2",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax
+    ax=ax,
+    label="Chute bloqueado"
 )
 
 # ==========================
