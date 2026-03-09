@@ -45,7 +45,7 @@ shots_blocked = df_shots[df_shots["resultado"] == "Bloqueado"]
 pitch = VerticalPitch(
     half=True,
     pitch_type="statsbomb",
-    pitch_color="grass",
+    pitch_color="#1c1c1c",
     line_color="white"
 )
 
