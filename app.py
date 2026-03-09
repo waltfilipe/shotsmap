@@ -140,7 +140,7 @@ coords = streamlit_image_coordinates(img)
 # DETECTAR CHUTE CLICADO
 # ==========================
 
-if coords:
+if coords is not None:
 
     click_x = coords["x"]
     click_y = coords["y"]
@@ -148,7 +148,7 @@ if coords:
     width, height = img.size
 
     pitch_x = 120 - (click_y / height * 60)
-    pitch_y = click_x / width * 80
+    pitch_y = (click_x / width) * 80
 
     distances = np.sqrt(
         (df_shots["x"] - pitch_x)**2 +
@@ -156,6 +156,13 @@ if coords:
     )
 
     shot_index = distances.idxmin()
+
+    st.session_state["shot_index"] = shot_index
+
+
+if "shot_index" in st.session_state:
+
+    shot_index = st.session_state["shot_index"]
 
     resultado = df_shots.loc[shot_index, "resultado"]
     xg = df_shots.loc[shot_index, "xg"]
