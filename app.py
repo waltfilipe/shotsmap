@@ -96,6 +96,23 @@ pitch.scatter(
 )
 
 # ==========================
+# LEGENDA
+# ==========================
+
+legend = ax.legend(
+    loc='lower right',
+    frameon=True,
+    borderpad=1.2,
+    fontsize=13,
+    labelspacing=1,
+    handletextpad=1.2
+)
+
+legend.get_frame().set_facecolor("#f5f5f5")
+legend.get_frame().set_edgecolor('black')
+legend.get_frame().set_linewidth(1.5)
+
+# ==========================
 # CONVERTER FIGURA PARA IMAGEM
 # ==========================
 
