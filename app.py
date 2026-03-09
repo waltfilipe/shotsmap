@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from mplsoccer import VerticalPitch
 from streamlit_image_coordinates import streamlit_image_coordinates
 from io import BytesIO
+from PIL import Image
 import numpy as np
 
 st.set_page_config(layout="wide")
@@ -51,85 +52,75 @@ pitch = VerticalPitch(
 fig, ax = pitch.draw(figsize=(10,7))
 
 # ==========================
-# CHUTES (IGUAL AO SEU)
+# CHUTES
 # ==========================
 
 pitch.scatter(
-    shots_goal.x,
-    shots_goal.y,
+    shots_goal.x, shots_goal.y,
     s=(shots_goal.xg * 2000) + 100,
     marker="*",
     c="#EF476F",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax,
-    label="Gol"
+    ax=ax
 )
 
 pitch.scatter(
-    shots_on_target.x,
-    shots_on_target.y,
+    shots_on_target.x, shots_on_target.y,
     s=(shots_on_target.xg * 1800) + 100,
     marker="h",
     c="#06D6A0",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax,
-    label="Chute no alvo"
+    ax=ax
 )
 
 pitch.scatter(
-    shots_off_target.x,
-    shots_off_target.y,
+    shots_off_target.x, shots_off_target.y,
     s=(shots_off_target.xg * 1800) + 100,
     marker="o",
     c="#FFD166",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax,
-    label="Chute para fora"
+    ax=ax
 )
 
 pitch.scatter(
-    shots_blocked.x,
-    shots_blocked.y,
+    shots_blocked.x, shots_blocked.y,
     s=(shots_blocked.xg * 1800) + 100,
     marker="s",
     c="#118AB2",
     edgecolors="#383838",
     linewidth=1.5,
-    ax=ax,
-    label="Chute bloqueado"
+    ax=ax
 )
 
-ax.legend()
-
 # ==========================
-# CONVERTER FIGURA EM IMAGEM
+# CONVERTER FIGURA PARA IMAGEM
 # ==========================
 
 buf = BytesIO()
 fig.savefig(buf, format="png", dpi=300, bbox_inches="tight")
 buf.seek(0)
 
-# ==========================
-# MOSTRAR IMAGEM CLICÁVEL
-# ==========================
-
-coords = streamlit_image_coordinates(buf)
+img = Image.open(buf)
 
 # ==========================
-# DETECTAR CHUTE CLICADO
+# IMAGEM CLICÁVEL
 # ==========================
 
-if coords is not None:
+coords = streamlit_image_coordinates(img)
+
+# ==========================
+# DETECTAR CHUTE
+# ==========================
+
+if coords:
 
     click_x = coords["x"]
     click_y = coords["y"]
 
-    # converter coordenada de pixel → campo
-    width = 1000
-    height = 700
+    width, height = img.size
 
     pitch_x = 120 - (click_y / height * 60)
     pitch_y = click_x / width * 80
@@ -141,6 +132,6 @@ if coords is not None:
 
     shot_index = distances.idxmin()
 
-    st.subheader("Vídeo da finalização")
+    st.subheader("Vídeo da Finalização")
 
     st.video(df_shots.loc[shot_index, "video"])
