@@ -157,6 +157,12 @@ if coords:
 
     shot_index = distances.idxmin()
 
-    st.subheader("Vídeo da finalização")
+    resultado = df_shots.loc[shot_index, "resultado"]
+    xg = df_shots.loc[shot_index, "xg"]
+    video_url = df_shots.loc[shot_index, "video"]
 
-    st.video(df_shots.loc[shot_index, "video"])
+    titulo = f"{resultado} (xG: {xg:.2f})"
+
+    st.subheader(titulo)
+
+    st.video(video_url)
