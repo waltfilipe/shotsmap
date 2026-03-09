@@ -21,7 +21,7 @@ data = {
     "xg": [0.30, 0.12, 0.05, 0.45, 0.08, 0.20, 0.15],
     "resultado": ["Gol", "Fora", "Bloqueado", "Gol", "Fora", "No Alvo", "Bloqueado"],
     "video": [
-        "https://drive.google.com/file/d/11-z4Ww9_vqB46QqfsU466WWjbbXGgRBK/view?usp=sharing",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/movie.mp4",
         "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/movie.mp4",
@@ -44,8 +44,8 @@ shots_blocked = df_shots[df_shots["resultado"] == "Bloqueado"]
 
 pitch = VerticalPitch(
     half=True,
-    pitch_type="statsbomb", 
-    pitch_color="grass",
+    pitch_type="statsbomb",
+    pitch_color="#1c1c1c",
     line_color="white"
 )
 
@@ -140,7 +140,7 @@ coords = streamlit_image_coordinates(img)
 # DETECTAR CHUTE CLICADO
 # ==========================
 
-if coords is not None:
+if coords:
 
     click_x = coords["x"]
     click_y = coords["y"]
@@ -148,7 +148,7 @@ if coords is not None:
     width, height = img.size
 
     pitch_x = 120 - (click_y / height * 60)
-    pitch_y = (click_x / width) * 80
+    pitch_y = click_x / width * 80
 
     distances = np.sqrt(
         (df_shots["x"] - pitch_x)**2 +
@@ -157,19 +157,6 @@ if coords is not None:
 
     shot_index = distances.idxmin()
 
-    st.session_state["shot_index"] = shot_index
+    st.subheader("Vídeo da finalização")
 
-
-if "shot_index" in st.session_state:
-
-    shot_index = st.session_state["shot_index"]
-
-    resultado = df_shots.loc[shot_index, "resultado"]
-    xg = df_shots.loc[shot_index, "xg"]
-    video_url = df_shots.loc[shot_index, "video"]
-
-    titulo = f"{resultado} (xG: {xg:.2f})"
-
-    st.subheader(titulo)
-
-    st.video(video_url)
+    st.video(df_shots.loc[shot_index, "video"])
