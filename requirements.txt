@@ -4,3 +4,4 @@ matplotlib
 mplsoccer
 streamlit-image-coordinates
 numpy
+Pillow
