@@ -49,7 +49,7 @@ pitch = VerticalPitch(
     line_color="white"
 )
 
-fig, ax = pitch.draw(figsize=(10,7))
+fig, ax = pitch.draw(figsize=(6,4))
 
 # ==========================
 # CHUTES
@@ -121,7 +121,7 @@ legend.get_frame().set_linewidth(1.5)
 # ==========================
 
 buf = BytesIO()
-fig.savefig(buf, format="png", dpi=300, bbox_inches="tight")
+fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
 buf.seek(0)
 
 img = Image.open(buf)
