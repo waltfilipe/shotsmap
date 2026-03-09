@@ -21,7 +21,7 @@ data = {
     "xg": [0.30, 0.12, 0.05, 0.45, 0.08, 0.20, 0.15],
     "resultado": ["Gol", "Fora", "Bloqueado", "Gol", "Fora", "No Alvo", "Bloqueado"],
     "video": [
-        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://drive.google.com/file/d/11-z4Ww9_vqB46QqfsU466WWjbbXGgRBK/view?usp=sharing",
         "https://www.w3schools.com/html/movie.mp4",
         "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/movie.mp4",
