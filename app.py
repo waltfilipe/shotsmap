@@ -22,7 +22,7 @@ data = {
     "resultado": ["Gol", "Fora", "Bloqueado", "Gol", "Fora", "No Alvo", "Bloqueado"],
     "video": [
         "videos/Sebas - Shot 1.mp4",   # seu vídeo local
-        None,
+        "videos/Sebas - Shot 2.mp4",
         None,
         None,
         None,
