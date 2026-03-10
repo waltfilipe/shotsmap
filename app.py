@@ -160,4 +160,11 @@ if coords:
 
     st.subheader("Vídeo da finalização")
 
-    st.video(df_shots.loc[shot_index, "video"])
+    video_path = df_shots.loc[shot_index, "video"]
+
+if video_path is not None:
+    video_file = open(video_path, "rb")
+    video_bytes = video_file.read()
+    st.video(video_bytes, width=450)  # <- define o tamanho do vídeo
+else:
+    st.write("Sem vídeo disponível para este chute.")
