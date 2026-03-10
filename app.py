@@ -21,15 +21,16 @@ data = {
     "xg": [0.30, 0.12, 0.05, 0.45, 0.08, 0.20, 0.15],
     "resultado": ["Gol", "Fora", "Bloqueado", "Gol", "Fora", "No Alvo", "Bloqueado"],
     "video": [
-        "https://github.com/waltfilipe/shotsmap/blob/db3720b13b6ac30c543d776a6b127cd1ff8ade01/Sebas%20-%20Shot%201.mp4",
-        "https://www.w3schools.com/html/movie.mp4",
-        "https://www.w3schools.com/html/mov_bbb.mp4",
-        "https://www.w3schools.com/html/movie.mp4",
-        "https://www.w3schools.com/html/mov_bbb.mp4",
-        "https://www.w3schools.com/html/movie.mp4",
-        "https://www.w3schools.com/html/mov_bbb.mp4"
+        "videos/Sebas - Shot 1.mp4",   # seu vídeo local
+        None,
+        None,
+        None,
+        None,
+        None,
+        None
     ]
 }
+
 
 df_shots = pd.DataFrame(data)
 
