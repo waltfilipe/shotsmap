@@ -50,7 +50,7 @@ pitch = VerticalPitch(
     line_color="white"
 )
 
-fig, ax = pitch.draw(figsize=(8,6))
+fig, ax = pitch.draw(figsize=(7,5))
 
 # ==========================
 # TAMANHO DOS CHUTES (REDUZIDO)
