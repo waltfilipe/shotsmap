@@ -9,7 +9,7 @@ import numpy as np
 
 st.set_page_config(layout="wide")
 
-st.title("Shot Map com Vídeos")
+st.title("Shot Map with videos")
 
 # ==========================
 # DADOS DOS CHUTES
@@ -50,7 +50,7 @@ pitch = VerticalPitch(
     line_color="white"
 )
 
-fig, ax = pitch.draw(figsize=(6,4))
+fig, ax = pitch.draw(figsize=(8,6))
 
 # ==========================
 # TAMANHO DOS CHUTES (REDUZIDO)
